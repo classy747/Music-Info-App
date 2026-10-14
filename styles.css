@@ -4,11 +4,11 @@
 
 :root {
     --bg: #2d2f33;          /* Dark gray background */
-    --surface: #6D6D6D;     /* Medium gray */
-    --light-gray: #A8A8A8;  /* Light gray */
+    --surface: #6D6D6D;    
+    --light-gray: #A8A8A8;  
     --yellow-light: #F6EB61;/* Bright pastel yellow */
-    --yellow-dark: #F9C74F; /* Warm gold/yellow */
-    --text: #F9F9F9;        /* Off-white text */
+    --yellow-dark: #F9C74F; 
+    --text: #F9F9F9;      
 }
 
 body {
@@ -243,11 +243,8 @@ main > p {
 .album:hover img {
     filter: brightness(0.95);
     transform: rotate(2deg) scale(1.02);
-    /* Gives it a sleek highlight border matching your gold/yellow palette */
     border-color: var(--yellow-dark);
 }
-
-/* Optional: Add a subtle text indicator or badge in the album's bottom-left corner */
 .album img::after {
     content: "VIEW RECORD →";
     position: absolute;
@@ -495,7 +492,7 @@ main > p {
     margin-top: 35px;
 }
 
-/* SIMPLE FOOTER */
+/* my FOOTER */
 
 .footer {
     margin-top: 100px;
@@ -511,7 +508,7 @@ main > p {
     margin: 0;
 }
 
-/* ANIMATIONS & RESPONSIVE */
+/* ANIMATION stuff */
 
 @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
