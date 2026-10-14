@@ -1,0 +1,537 @@
+/* ========================================
+   MUSIC INDEX — EDITORIAL DESIGN SYSTEM
+======================================== */
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #2d2f33;          /* Dark gray background */
+    --surface: #6D6D6D;     /* Medium gray */
+    --light-gray: #A8A8A8;  /* Light gray */
+    --yellow-light: #F6EB61;/* Bright pastel yellow */
+    --yellow-dark: #F9C74F; /* Warm gold/yellow */
+    --text: #F9F9F9;        /* Off-white text */
+}
+
+body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 40px;
+    background: var(--yellow-light);
+    color: #1d1e22;
+    border-bottom: 3px solid #1d1e22;
+}
+
+.navbar span {
+    font-size: 24px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    cursor: pointer;
+}
+
+/* MAIN AND HERO */
+
+main {
+    max-width: 1600px;
+    margin: auto;
+    padding: 45px 40px;
+}
+
+h1 {
+    max-width: 900px;
+    margin: 0;
+    font-size: clamp(60px, 7vw, 115px);
+    line-height: 0.88;
+    letter-spacing: -0.07em;
+    text-transform: uppercase;
+}
+
+main > h1,
+main > p,
+.search-box {
+    animation: fadeUp 0.8s ease both;
+}
+
+main > p {
+    max-width: 500px;
+    margin-top: 24px;
+    color: var(--light-gray);
+    font-size: 16px;
+    line-height: 1.5;
+    animation-delay: 0.15s;
+}
+
+/* SEARCH */
+
+.search-box {
+    display: flex;
+    max-width: 1200px;
+    margin: 50px 0 25px;
+    animation-delay: 0.25s;
+}
+
+.search-input-area {
+    display: flex;
+    flex: 1;
+    min-width: 0;
+    border-bottom: 2px solid var(--yellow-dark);
+    transition: border-color 0.3s ease;
+}
+
+.search-input-area:focus-within {
+    border-color: var(--text);
+}
+
+.search-input-area input {
+    flex: 1;
+    min-width: 0;
+    padding: 15px 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: var(--text);
+    font-size: 22px;
+}
+
+.search-input-area input::placeholder {
+    color: var(--light-gray);
+}
+
+.search-toggle {
+    display: flex;
+    align-items: center;
+}
+
+.search-toggle button {
+    padding: 0 12px;
+    border: none;
+    background: transparent;
+    color: var(--light-gray);
+    cursor: pointer;
+    transition: color 0.25s ease;
+}
+
+.search-toggle button.active {
+    color: var(--yellow-dark);
+}
+
+#searchButton {
+    padding: 0 30px;
+    border: none;
+    background: var(--yellow-dark);
+    color: #1d1e22;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.25s ease, transform 0.25s ease;
+}
+
+#searchButton:hover {
+    background: var(--text);
+    transform: translateX(4px);
+}
+
+#status {
+    color: var(--light-gray);
+    font-size: 13px;
+}
+
+/* MUSIC CAROUSEL */
+
+.music-carousel {
+    margin: 80px 0 100px;
+}
+
+.music-carousel h2 {
+    margin: 0 0 25px;
+    color: var(--light-gray);
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.carousel-track {
+    display: flex;
+    gap: 26px;
+    overflow-x: auto;
+    padding: 5px 5px 25px 0;
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+}
+
+.carousel-track::-webkit-scrollbar {
+    display: none;
+}
+
+.carousel-item {
+    flex: 0 0 220px;
+    min-width: 0;
+    cursor: pointer;
+}
+
+.carousel-item img {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    background: var(--surface);
+    transition: filter 0.35s ease, transform 0.35s ease;
+}
+
+.carousel-item:hover img {
+    filter: brightness(0.9);
+    transform: rotate(2deg) scale(1.02);
+}
+
+.carousel-item h3 {
+    margin: 14px 0 5px;
+    font-size: 18px;
+    font-weight: normal;
+    transition: color 0.25s ease;
+}
+
+.carousel-item:hover h3 {
+    color: var(--yellow-dark);
+}
+
+.carousel-item p {
+    margin: 0;
+    color: var(--light-gray);
+    font-size: 13px;
+}
+
+/* ALBUM GRID */
+
+#albumGrid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 45px 24px;
+    margin-top: 55px;
+}
+/* ALBUM HOVER EFFECTS */
+
+.album {
+    position: relative;
+    min-width: 0;
+    cursor: pointer;
+    animation: fadeUp 0.6s ease both;
+}
+
+.album img {
+    display: block;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 0.92;
+    object-fit: cover;
+    background: var(--surface);
+    border-radius: 2px;
+    /* Added a smooth transition for border color and transform */
+    transition: filter 0.35s ease, transform 0.35s ease, border-color 0.35s ease;
+    border: 2px solid transparent;
+}
+
+.album:hover img {
+    filter: brightness(0.95);
+    transform: rotate(2deg) scale(1.02);
+    /* Gives it a sleek highlight border matching your gold/yellow palette */
+    border-color: var(--yellow-dark);
+}
+
+/* Optional: Add a subtle text indicator or badge in the album's bottom-left corner */
+.album img::after {
+    content: "VIEW RECORD →";
+    position: absolute;
+    bottom: 8px;
+    left: 8px;
+    padding: 4px 8px;
+    background: var(--bg);
+    color: var(--yellow-light);
+    font-size: 10px;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.album:hover img::after {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ALTERNATING ALBUM IMAGE SHAPES & TYPOGRAPHY */
+
+.album:nth-child(3n + 1) img {
+    border-radius: 2px 2px 2px 18px;
+}
+
+.album:nth-child(3n + 2) img {
+    border-radius: 2px;
+}
+
+.album:nth-child(3n) img {
+    border-radius: 2px 18px 2px 2px;
+}
+
+.album:nth-child(4n + 1) h2,
+.album:nth-child(4n + 1) h3 {
+    text-transform: uppercase;
+    letter-spacing: -0.035em;
+}
+
+.album:nth-child(4n + 3) h2,
+.album:nth-child(4n + 3) h3 {
+    font-weight: normal;
+    letter-spacing: 0.015em;
+}
+
+/* ALBUM DETAILS */
+
+.album-detail {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    animation: fadeUp 0.6s ease both;
+}
+
+.album-detail-header {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    gap: clamp(30px, 5vw, 70px);
+}
+
+.album-detail-header > img {
+    display: block;
+    width: 100%;
+    max-width: 560px;
+    aspect-ratio: 1;
+    object-fit: cover;
+    background: var(--surface);
+    transition: transform 0.3s ease;
+}
+
+.album-detail-header > img:hover {
+    transform: rotate(2deg) scale(1.02);
+}
+
+.album-detail-text h2 {
+    margin: 0 0 18px;
+    font-size: clamp(42px, 5.5vw, 88px);
+    line-height: 0.9;
+    letter-spacing: -0.07em;
+    text-transform: uppercase;
+}
+
+.album-detail-text > p {
+    max-width: 600px;
+    margin: 0 0 10px;
+    color: var(--light-gray);
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+.album-metadata,
+.artist-metadata {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px 25px;
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid var(--surface);
+}
+
+.album-metadata p,
+.artist-metadata p {
+    margin: 0;
+    padding-left: 12px;
+    border-left: 1px solid var(--yellow-dark);
+    color: var(--text);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.album-summary {
+    max-width: 650px;
+    color: var(--light-gray);
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+.album-detail-text > .album-summary {
+    margin: 25px 0 0;
+    padding-top: 20px;
+    border-top: 1px solid var(--surface);
+}
+
+/* ARTIST DETAILS */
+
+.artist-header {
+    width: 100%;
+    max-width: 1000px;
+    margin: 70px auto 60px;
+    padding: 35px 0 35px 35px;
+    border-left: 3px solid var(--yellow-dark);
+    background: transparent;
+    animation: fadeUp 0.6s ease both;
+}
+
+.artist-header img {
+    display: block;
+    width: 170px;
+    height: 170px;
+    margin-bottom: 30px;
+    object-fit: cover;
+    background: var(--surface);
+    transition: transform 0.35s ease;
+}
+
+.artist-header img:hover {
+    transform: rotate(2deg) scale(1.03);
+}
+
+.artist-header h1 {
+    margin: 0 0 25px;
+    font-size: clamp(45px, 6vw, 90px);
+    line-height: 0.9;
+    letter-spacing: -0.07em;
+    text-transform: uppercase;
+}
+
+.artist-header p {
+    max-width: 700px;
+    margin: 0;
+    color: var(--light-gray);
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+/* BACK BUTTON & TRACK LIST */
+
+.back-button {
+    margin-bottom: 40px;
+    border: none;
+    background: transparent;
+    color: var(--yellow-dark);
+    font-size: 16px;
+    cursor: pointer;
+    transition: color 0.25s ease;
+}
+
+.back-button:hover {
+    color: var(--text);
+}
+
+.track-filter,
+.track-list {
+    width: 100%;
+    max-width: 900px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.track-filter {
+    margin-top: 45px;
+    margin-bottom: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--surface);
+}
+
+.track-filter select {
+    padding: 8px 12px;
+    border: 1px solid var(--surface);
+    background: var(--bg);
+    color: var(--text);
+}
+
+.track-list {
+    padding: 0;
+    list-style: none;
+}
+
+.track-list li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--surface);
+    transition: padding 0.25s ease, color 0.25s ease;
+}
+
+.track-list li:hover {
+    padding-left: 8px;
+    color: var(--yellow-dark);
+}
+
+.track-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.track-duration {
+    color: var(--light-gray);
+}
+
+/* DETAIL PAGE OVERRIDE */
+
+#albumGrid:has(.album-detail),
+#albumGrid:has(.artist-header),
+#albumGrid:has(.track-list) {
+    display: block;
+    margin-top: 35px;
+}
+
+/* SIMPLE FOOTER */
+
+.footer {
+    margin-top: 100px;
+    padding: 40px;
+    background: var(--bg);
+    border-top: 1px solid var(--surface);
+    color: var(--light-gray);
+    font-size: 13px;
+    text-align: center;
+}
+
+.footer p {
+    margin: 0;
+}
+
+/* ANIMATIONS & RESPONSIVE */
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 900px) {
+    #albumGrid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 35px 18px;
+    }
+}
+
+@media (max-width: 600px) {
+    #albumGrid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 30px 14px;
+    }
+}

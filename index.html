@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Last.fm Albums</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <span onclick="location.reload()">DEEP CUTS</span>
+</nav>
+
+<main>
+
+  
+
+
+    <div class="search-box">
+
+        <div class="search-input-area">
+
+            <input id="searchInput" type="text" placeholder="Search for an artist...">
+
+            <div class="search-toggle">
+    
+                <button id="artistToggle" class="active">Artist</button>
+                  
+                <button id="albumToggle">Album</button>
+            </div>
+
+        </div>
+
+        <button id="searchButton">Search</button>
+    
+
+    </div>
+   
+    <p id="status"></p>
+
+    <!-- TOP ARTISTS -->
+
+    <section class="music-carousel" id="topArtistsSection">
+
+              <h1>Popular Artists</h1>
+
+        <div class="carousel-track" id="carouselTrack"></div>
+
+    </section>
+
+    <div id="artistInfo"></div>
+              <h1> Popular Albums</h1>
+
+    <div id="albumGrid"></div>
+
+<footer class="footer">
+    <div class="footer-content">
+        <span class="footer-logo">DEEP CUTS</span>
+        <p>Discover music beyond the mainstream.</p>
+    </div>
+
+    <div class="footer-bottom">
+        <span>Powered by Last.fm</span>
+        <span>Find your next favourite.</span>
+    </div>
+</footer>
+
+</main>
+
+<script src="script.js"></script>
+
+</body>
+</html>
