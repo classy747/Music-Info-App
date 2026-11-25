@@ -3,12 +3,14 @@
 }
 
 :root {
-    --bg: #2d2f33;          /* Dark gray background */
-    --surface: #6D6D6D;    
-    --light-gray: #A8A8A8;  
-    --yellow-light: #F6EB61;/* Bright pastel yellow */
-    --yellow-dark: #F9C74F; 
-    --text: #F9F9F9;      
+    --bg: #1d1e22;
+    --panel: #25272d;
+    --panel-secondary: #393f4d;
+    --yellow: #feda6a;
+    --text: #d4d4dc;
+    --muted: #858894;
+    --surface: var(--panel);
+    --light-gray: var(--muted);
 }
 
 body {
@@ -16,6 +18,11 @@ body {
     background: var(--bg);
     color: var(--text);
     font-family: Arial, sans-serif;
+}
+
+html.album-loading,
+html.album-loading body {
+    overflow: hidden;
 }
 
 .navbar {
@@ -27,10 +34,19 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 22px 40px;
-    background: var(--yellow-light);
-    color: #1d1e22;
-    border-bottom: 3px solid #1d1e22;
+    gap: 24px;
+    padding: 18px 40px;
+    background: var(--yellow);
+    color: var(--bg);
+}
+
+.navbar::before {
+    position: absolute;
+    inset: 0 0 auto;
+    height: 4px;
+    background: linear-gradient(90deg, var(--panel-secondary), var(--yellow), var(--panel-secondary));
+    content: "";
+    pointer-events: none;
 }
 
 .navbar span {
@@ -40,12 +56,18 @@ body {
     cursor: pointer;
 }
 
+.navbar img {
+    display: block;
+    height: 48px;
+    width: auto;
+}
+
 /* MAIN AND HERO */
 
 main {
     max-width: 1600px;
     margin: auto;
-    padding: 45px 40px;
+    padding: 110px 40px 45px;
 }
 
 h1 {
@@ -58,8 +80,7 @@ h1 {
 }
 
 main > h1,
-main > p,
-.search-box {
+main > p {
     animation: fadeUp 0.8s ease both;
 }
 
@@ -76,74 +97,147 @@ main > p {
 
 .search-box {
     display: flex;
-    max-width: 1200px;
-    margin: 50px 0 25px;
-    animation-delay: 0.25s;
+    flex: 0 1 720px;
+    min-width: 0;
+    height: 48px;
+    margin: 0;
+    border-bottom: 2px solid #1d1e22;
+    transition: border-color 0.25s ease;
+}
+
+.search-box:focus-within {
+    border-color: var(--bg);
 }
 
 .search-input-area {
     display: flex;
     flex: 1;
     min-width: 0;
-    border-bottom: 2px solid var(--yellow-dark);
-    transition: border-color 0.3s ease;
-}
-
-.search-input-area:focus-within {
-    border-color: var(--text);
+    align-items: center;
 }
 
 .search-input-area input {
     flex: 1;
     min-width: 0;
-    padding: 15px 0;
+    height: 100%;
+    padding: 0 14px;
     border: none;
     outline: none;
     background: transparent;
-    color: var(--text);
-    font-size: 22px;
+    color: var(--bg);
+    font-size: 16px;
 }
 
 .search-input-area input::placeholder {
-    color: var(--light-gray);
+    color: rgb(29 30 34 / 62%);
 }
 
 .search-toggle {
     display: flex;
+    position: relative;
+    flex: 0 0 128px;
     align-items: center;
+    padding: 2px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgb(29 30 34 / 14%);
+}
+
+.search-toggle::before {
+    position: absolute;
+    inset: 2px auto 2px 2px;
+    width: calc(50% - 2px);
+    border-radius: 999px;
+    background: var(--bg);
+    content: "";
+    transition: transform 0.25s ease;
+    pointer-events: none;
+}
+
+.search-toggle.album-selected::before {
+    transform: translateX(100%);
 }
 
 .search-toggle button {
-    padding: 0 12px;
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    min-width: 0;
+    height: 30px;
+    padding: 0 8px;
     border: none;
     background: transparent;
-    color: var(--light-gray);
+    color: rgb(29 30 34 / 72%);
+    font-size: 12px;
+    font-weight: 700;
     cursor: pointer;
     transition: color 0.25s ease;
 }
 
 .search-toggle button.active {
-    color: var(--yellow-dark);
+    color: var(--yellow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .search-toggle::before {
+        transition: none;
+    }
 }
 
 #searchButton {
-    padding: 0 30px;
+    flex: 0 0 auto;
+    padding: 0 20px;
     border: none;
-    background: var(--yellow-dark);
-    color: #1d1e22;
+    background: var(--bg);
+    color: var(--yellow);
     font-weight: bold;
     cursor: pointer;
-    transition: background 0.25s ease, transform 0.25s ease;
+    transition: background 0.25s ease;
 }
 
 #searchButton:hover {
-    background: var(--text);
-    transform: translateX(4px);
+    background: var(--panel-secondary);
 }
 
 #status {
     color: var(--light-gray);
     font-size: 13px;
+}
+
+.loading-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    padding: 24px;
+    background: rgb(183 186 195 / 34%);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    text-align: center;
+}
+
+.loading-overlay[hidden] {
+    display: none;
+}
+
+.loading-record {
+    width: clamp(110px, 20vw, 180px);
+    height: auto;
+    animation: spinRecord 2.5s linear infinite;
+}
+
+.loading-record.rating-completion {
+    animation: spinRecord 3s linear 1 forwards;
+}
+
+.loading-overlay p {
+    margin: 0;
+    color: var(--text);
+    font-size: 15px;
 }
 
 /* MUSIC CAROUSEL */
@@ -169,6 +263,24 @@ main > p {
     scroll-behavior: smooth;
 }
 
+.carousel-track,
+.popular-genre-scroll {
+    cursor: grab;
+}
+
+.carousel-track.is-dragging,
+.carousel-track.is-dragging *,
+.popular-genre-scroll.is-dragging,
+.popular-genre-scroll.is-dragging * {
+    cursor: grabbing !important;
+    user-select: none;
+}
+
+.carousel-track.is-dragging,
+.popular-genre-scroll.is-dragging {
+    scroll-behavior: auto;
+}
+
 .carousel-track::-webkit-scrollbar {
     display: none;
 }
@@ -177,6 +289,10 @@ main > p {
     flex: 0 0 220px;
     min-width: 0;
     cursor: pointer;
+}
+
+.carousel-track .carousel-item {
+    cursor: grab;
 }
 
 .carousel-item img {
@@ -201,7 +317,7 @@ main > p {
 }
 
 .carousel-item:hover h3 {
-    color: var(--yellow-dark);
+    color: var(--yellow);
 }
 
 .carousel-item p {
@@ -218,6 +334,71 @@ main > p {
     gap: 45px 24px;
     margin-top: 55px;
 }
+
+.popular-genre-wrap {
+    position: relative;
+    margin: 30px 0 -25px;
+    padding-bottom: 2px;
+}
+
+.popular-genre-wrap::after {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: calc(50% - 50vw);
+    height: 2px;
+    background: var(--yellow);
+    content: "";
+    pointer-events: none;
+}
+
+.popular-genre-wrap[hidden] {
+    display: none;
+}
+
+.popular-genre-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    margin: 0;
+    padding: 0 4px;
+    background: transparent;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    overscroll-behavior-x: contain;
+}
+
+.popular-genre-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.popular-genre-button {
+    flex: 0 0 auto;
+    min-height: 44px;
+    padding: 0 14px;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    font-size: 13px;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+
+.popular-genre-button:hover,
+.popular-genre-button:focus-visible {
+    background: var(--panel);
+    color: var(--yellow);
+    outline: none;
+}
+
+.popular-genre-button.active {
+    background: var(--yellow);
+    color: var(--bg);
+    font-weight: 700;
+}
+
 /* ALBUM HOVER EFFECTS */
 
 .album {
@@ -240,11 +421,22 @@ main > p {
     border: 2px solid transparent;
 }
 
+.album img.image-fallback,
+.carousel-item img.image-fallback,
+.album-cover-block img.image-fallback,
+.album-rating-header img.image-fallback,
+.artist-header img.image-fallback {
+    object-fit: contain;
+}
+
 .album:hover img {
     filter: brightness(0.95);
     transform: rotate(2deg) scale(1.02);
-    border-color: var(--yellow-dark);
+    /* Gives it a sleek highlight border matching your gold/yellow palette */
+    border-color: var(--yellow);
 }
+
+/* Optional: Add a subtle text indicator or badge in the album's bottom-left corner */
 .album img::after {
     content: "VIEW RECORD →";
     position: absolute;
@@ -252,7 +444,7 @@ main > p {
     left: 8px;
     padding: 4px 8px;
     background: var(--bg);
-    color: var(--yellow-light);
+    color: var(--yellow);
     font-size: 10px;
     font-weight: bold;
     letter-spacing: 0.1em;
@@ -308,19 +500,29 @@ main > p {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     align-items: center;
     gap: clamp(30px, 5vw, 70px);
+    margin-bottom: clamp(24px, 4vw, 48px);
+    padding-bottom: clamp(24px, 4vw, 48px);
+    border-bottom: 2px solid var(--yellow);
 }
 
-.album-detail-header > img {
-    display: block;
+.album-cover-block {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
     width: 100%;
     max-width: 560px;
+}
+
+.album-cover-block img {
+    display: block;
+    width: 100%;
     aspect-ratio: 1;
     object-fit: cover;
     background: var(--surface);
     transition: transform 0.3s ease;
 }
 
-.album-detail-header > img:hover {
+.album-cover-block img:hover {
     transform: rotate(2deg) scale(1.02);
 }
 
@@ -354,7 +556,7 @@ main > p {
 .artist-metadata p {
     margin: 0;
     padding-left: 12px;
-    border-left: 1px solid var(--yellow-dark);
+    border-left: 1px solid var(--yellow);
     color: var(--text);
     font-size: 15px;
     line-height: 1.6;
@@ -380,7 +582,7 @@ main > p {
     max-width: 1000px;
     margin: 70px auto 60px;
     padding: 35px 0 35px 35px;
-    border-left: 3px solid var(--yellow-dark);
+    border-left: 3px solid var(--yellow);
     background: transparent;
     animation: fadeUp 0.6s ease both;
 }
@@ -421,7 +623,7 @@ main > p {
     margin-bottom: 40px;
     border: none;
     background: transparent;
-    color: var(--yellow-dark);
+    color: var(--yellow);
     font-size: 16px;
     cursor: pointer;
     transition: color 0.25s ease;
@@ -431,47 +633,263 @@ main > p {
     color: var(--text);
 }
 
-.track-filter,
-.track-list {
+
+/* Album rating + tracklist layout */
+.album-rating-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 48px;
+    align-items: start;
     width: 100%;
-    max-width: 900px;
-    margin-right: auto;
-    margin-left: auto;
+}
+
+.album-rating-screen {
+    width: 100%;
+    min-height: 55vh;
+    padding: 24px 0 64px;
+}
+
+.album-rating-screen > .back-button {
+    margin-bottom: clamp(32px, 6vw, 72px);
+}
+
+.album-rating-header {
+    display: flex;
+    align-items: center;
+    gap: clamp(20px, 4vw, 40px);
+    margin-bottom: clamp(36px, 6vw, 60px);
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--panel-secondary);
+}
+
+.album-rating-header img {
+    display: block;
+    flex: 0 0 auto;
+    width: clamp(96px, 14vw, 160px);
+    aspect-ratio: 1;
+    object-fit: cover;
+    background: var(--surface);
+}
+
+.album-rating-album-title {
+    margin: 0 0 10px;
+    font-size: clamp(28px, 4vw, 56px);
+    line-height: 0.95;
+    letter-spacing: -0.06em;
+    text-transform: uppercase;
+}
+
+.album-rating-artist {
+    margin: 0;
+    color: var(--light-gray);
+    font-size: clamp(14px, 1.8vw, 20px);
+}
+
+.album-rating-session {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: clamp(24px, 4vw, 48px);
+    border-top: 1px solid var(--panel-secondary);
+    border-bottom: 1px solid var(--panel-secondary);
+}
+
+.album-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(20px, 4vw, 48px);
+    flex-wrap: wrap;
+    margin: clamp(36px, 6vw, 64px) 0 28px;
+}
+
+.album-rate-tracks {
+    display: block;
+    flex: 0 1 405px;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    padding: 16px 28px;
+    font-size: 15px;
+    letter-spacing: 0.04em;
+    border-radius: 999px;
+    animation: softYellowGlow 2.8s ease-in-out infinite;
 }
 
 .track-filter {
-    margin-top: 45px;
-    margin-bottom: 20px;
-    padding-top: 20px;
-    border-top: 1px solid var(--surface);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex: 0 1 405px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.track-filter label {
+    flex: 0 0 auto;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
 }
 
 .track-filter select {
-    padding: 8px 12px;
-    border: 1px solid var(--surface);
-    background: var(--bg);
+    flex: 0 1 360px;
+    width: 100%;
+    min-width: min(100%, 240px);
+    min-height: 48px;
+    padding: 0 14px;
+    border: 1px solid var(--panel-secondary);
+    border-bottom: 2px solid var(--yellow);
+    border-radius: 0;
+    background: var(--panel);
     color: var(--text);
+    color-scheme: dark;
+    font: inherit;
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, background 0.2s ease;
 }
 
+.track-filter select:hover,
+.track-filter select:focus-visible {
+    border-color: var(--yellow);
+    outline: none;
+}
+
+/* Left side: current rating */
+.album-rating-panel {
+    position: sticky;
+    top: 30px;
+    width: 100%;
+    max-width: none;
+}
+
+/* Right side: scrolling tracklist */
 .track-list {
-    padding: 0;
+    width: 100%;
+    max-width: none;
+    max-height: 520px;
+    overflow-y: auto;
+    position: relative;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: #555 transparent;
+    margin: 0;
+    padding: 0 10px 0 0;
     list-style: none;
 }
 
-.track-list li {
+.album-tracklist-view .track-list {
+    max-height: none;
+    overflow: visible;
+}
+
+.album-tracklist-view .track-list-spacer {
+    display: none;
+}
+
+.album-tracklist-view .track-item {
+    cursor: default;
+}
+
+/* Individual tracks */
+.track-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 16px 12px;
+    border-bottom: 1px solid #393f4d;
+    transition: background 0.2s ease, border-color 0.2s ease;
+    cursor: pointer;
+}
+
+/* Currently selected track */
+.track-item.active {
+    background: #25272d;
+    border-left: 3px solid #feda6a;
+    padding-left: 9px;
+}
+
+/* Previously rated tracks */
+.track-item.rated {
+    opacity: 0.75;
+}
+
+/* Track title */
+.track-item .track-title {
+    flex: 1;
+    min-width: 0;
+}
+
+.track-item .track-name {
+    flex: 1;
+    min-width: 0;
+}
+
+.track-item .track-number {
+    flex: 0 0 2.5ch;
+    color: var(--muted);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.06em;
+}
+
+.track-item.active .track-number {
+    color: var(--yellow);
+}
+
+/* Track rating */
+.track-item .track-rating {
+    color: #feda6a;
+    white-space: nowrap;
+}
+
+.track-list-spacer {
+    display: block;
+    padding: 0;
+    border: 0;
+    pointer-events: none;
+}
+
+.album-rating-current {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    padding: 14px 0;
-    border-bottom: 1px solid var(--surface);
-    transition: padding 0.25s ease, color 0.25s ease;
+    flex-wrap: wrap;
+    margin-bottom: 12px;
 }
 
-.track-list li:hover {
-    padding-left: 8px;
-    color: var(--yellow-dark);
+.album-rating-current .album-rating-track-meta {
+    flex: 1 1 220px;
+    min-width: 0;
+    margin-bottom: 0;
 }
+
+.album-rating-current .album-rating-stars {
+    flex: 0 0 auto;
+    margin-bottom: 0;
+}
+
+/* Responsive layout */
+@media (max-width: 800px) {
+    .album-rating-layout {
+        grid-template-columns: 1fr;
+        gap: 28px;
+    }
+
+    .album-rating-panel {
+        position: static;
+    }
+
+    .track-list {
+        max-height: 400px;
+    }
+}
+
+
 
 .track-name {
     white-space: nowrap;
@@ -479,8 +897,171 @@ main > p {
     text-overflow: ellipsis;
 }
 
+.track-meta {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 18px;
+    flex-wrap: wrap;
+    margin-left: auto;
+}
+
 .track-duration {
     color: var(--light-gray);
+}
+
+.album-cover-rating {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    width: 100%;
+    margin: 0 0 18px;
+    padding: 0;
+    border: 0;
+    color: var(--text);
+}
+
+.album-rating-meta-label {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.album-rating-meta-value {
+    color: var(--yellow);
+    font-size: 14px;
+}
+
+
+.album-rating-progress {
+    margin: 0 0 14px;
+    color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.album-rating-track-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.album-rating-number {
+    color: var(--yellow);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.album-rating-title {
+    margin: 0;
+    font-size: clamp(28px, 3vw, 42px);
+    line-height: 1.15;
+    letter-spacing: -0.045em;
+    font-weight: 700;
+    text-transform: none;
+}
+
+.album-rating-value {
+    margin: 0 0 14px;
+    color: var(--yellow);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.album-rating-stars {
+    display: flex;
+    gap: clamp(6px, 0.8vw, 12px);
+    margin-bottom: 16px;
+}
+
+.album-rating-star {
+    border: none;
+    background: transparent;
+    color: var(--panel-secondary);
+    font-size: clamp(40px, 4vw, 54px);
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.album-rating-star.preview,
+.album-rating-star.selected {
+    color: var(--yellow);
+}
+
+.album-rating-star:hover {
+    transform: scale(1.08);
+    color: var(--yellow);
+}
+
+.album-rating-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.album-rating-button,
+.rate-album-button {
+    border: 1px solid var(--yellow);
+    background: var(--yellow);
+    color: var(--bg);
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.album-rating-button.secondary,
+.rate-album-button.secondary {
+    background: transparent;
+    color: var(--yellow);
+}
+
+.album-rating-button:hover,
+.rate-album-button:hover {
+    background: transparent;
+    color: var(--yellow);
+    box-shadow: 0 0 12px rgb(254 218 106 / 32%);
+}
+
+.album-rating-button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.album-rating-status {
+    margin: 12px 0 0;
+    min-height: 1.2em;
+    color: var(--yellow);
+    font-size: 12px;
+}
+
+.album-rating-summary-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 8px;
+}
+
+.album-rating-final-score {
+    margin: 0;
+    color: var(--yellow);
+    font-size: clamp(32px, 4vw, 48px);
+    line-height: 1;
+    letter-spacing: -0.05em;
+}
+
+.rate-album-button {
+    margin-top: 18px;
 }
 
 /* DETAIL PAGE OVERRIDE */
@@ -492,27 +1073,68 @@ main > p {
     margin-top: 35px;
 }
 
-/* my FOOTER */
+/* SIMPLE FOOTER */
 
 .footer {
     margin-top: 100px;
-    padding: 40px;
-    background: var(--bg);
-    border-top: 1px solid var(--surface);
-    color: var(--light-gray);
+    padding: 32px 40px;
+    background: var(--yellow);
+    border-top: 3px solid var(--bg);
+    color: var(--bg);
     font-size: 13px;
-    text-align: center;
+    text-align: right;
+}
+
+.footer-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 20px;
+}
+
+.footer-content img {
+    display: block;
+    width: clamp(260px, 35vw, 440px);
+    height: auto;
+    object-fit: contain;
+}
+
+.footer-copy {
+    text-align: right;
+}
+
+.footer-logo {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+    letter-spacing: 0.12em;
 }
 
 .footer p {
     margin: 0;
 }
 
-/* ANIMATION stuff */
+/* ANIMATIONS & RESPONSIVE */
 
 @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spinRecord {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes softYellowGlow {
+    0%, 100% { box-shadow: 0 0 0 rgb(254 218 106 / 0%); }
+    50% { box-shadow: 0 0 12px rgb(254 218 106 / 28%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .album-rate-tracks {
+        animation: none;
+    }
 }
 
 @media (max-width: 900px) {
@@ -523,8 +1145,159 @@ main > p {
 }
 
 @media (max-width: 600px) {
+    .navbar {
+        gap: 14px;
+        padding: 10px 16px;
+    }
+
+    .navbar img {
+        height: 40px;
+    }
+
+    .search-box {
+        flex: 1 1 auto;
+    }
+
+    .track-filter {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 8px;
+        flex: 0 1 auto;
+    }
+
+    .album-actions {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .album-rate-tracks {
+        flex: 0 1 auto;
+        align-self: center;
+    }
+
+    .track-filter select {
+        flex: 1 1 auto;
+        min-width: 0;
+        max-width: none;
+    }
+
+    .search-input-area input {
+        padding: 0 10px;
+        font-size: 14px;
+    }
+
+    .search-toggle button {
+        padding: 0 4px;
+        font-size: 11px;
+    }
+
+    #searchButton {
+        padding: 0 12px;
+    }
+
+    main {
+        padding: 100px 20px 35px;
+    }
+
+    .footer {
+        padding: 24px 20px;
+    }
+
+    .footer-content {
+        gap: 16px;
+    }
+
+    .footer-content img {
+        width: min(40vw, 240px);
+        height: auto;
+    }
+
     #albumGrid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 30px 14px;
+    }
+
+    .popular-genre-scroll {
+        gap: 8px;
+        margin-top: 22px;
+    }
+
+    .popular-genre-button {
+        min-height: 44px;
+        padding: 0 10px;
+    }
+
+    .album-detail-header {
+        grid-template-columns: 1fr;
+        gap: 22px;
+    }
+
+    .album-cover-block {
+        max-width: 100%;
+    }
+
+    .album-detail-text h2 {
+        margin-bottom: 12px;
+        font-size: clamp(32px, 9vw, 54px);
+    }
+
+    .album-rating-header {
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 32px;
+        padding-bottom: 20px;
+    }
+
+    .album-rating-header img {
+        width: clamp(80px, 24vw, 112px);
+    }
+
+    .album-rating-album-title {
+        font-size: clamp(24px, 7vw, 38px);
+    }
+
+    .album-detail-text > p {
+        max-width: 100%;
+        margin-bottom: 8px;
+    }
+
+    .album-metadata,
+    .artist-metadata {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        margin-top: 18px;
+        padding-top: 18px;
+    }
+
+    .album-metadata p,
+    .artist-metadata p {
+        padding-left: 0;
+        border-left: none;
+        border-top: 1px solid var(--surface);
+        padding-top: 10px;
+    }
+
+    .album-detail-text > .album-summary {
+        margin-top: 18px;
+        padding-top: 18px;
+    }
+
+    .artist-header {
+        margin: 40px auto 30px;
+        padding: 20px 0 0;
+        border-left: none;
+        border-top: 3px solid var(--yellow);
+    }
+
+    .artist-header img {
+        width: min(220px, 100%);
+        height: auto;
+        aspect-ratio: 1;
+        margin-bottom: 18px;
+    }
+
+    .artist-header h1 {
+        margin-bottom: 16px;
     }
 }
